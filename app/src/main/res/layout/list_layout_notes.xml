@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffffff">
+    
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:id="@+id/Relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/assunto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Assunto"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+        <RelativeLayout
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:animateLayoutChanges="true"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/assunto">
+
+            <TextView
+                android:id="@+id/morada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Rua:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+
+            <TextView
+                android:id="@+id/localidade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Localidade:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_below="@id/morada" />
+
+            <TextView
+                android:id="@+id/textCodPostal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textLocalidade"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toLeftOf="@id/data"
+                android:layout_toEndOf="@id/codpostal"
+                android:text="4920-062" />
+
+            <TextView
+                android:id="@+id/textMorada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Rua da Mota nº117"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:layout_toEndOf="@id/morada" />
+
+            <TextView
+                android:id="@+id/codpostal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Cod.Postal:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_below="@id/localidade"/>
+
+            <TextView
+                android:id="@+id/textLocalidade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Vila Nova de Cerveira"
+                android:layout_toEndOf="@id/localidade"
+                android:layout_below="@id/textMorada"/>
+
+            <TextView
+                android:id="@+id/data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textLocalidade"
+                android:layout_marginTop="8dp"
+                android:text="Data:"
+                android:layout_marginStart="130dp"
+                android:layout_toRightOf="@id/codpostal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+            <TextView
+                android:id="@+id/textData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="20/02/2020"
+                android:layout_toEndOf="@id/data"
+                android:layout_below="@id/textLocalidade"/>
+
+            <TextView
+                android:id="@+id/observacoes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:text="Observações"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+               android:layout_below="@id/codpostal" />
+
+            <TextView
+                android:id="@+id/textObs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="A seguir a subida de paralelo do sentido de quem entra encontra-se uma pedra que pertence a um muro muita saída para fora "
+                android:layout_below="@id/observacoes"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
