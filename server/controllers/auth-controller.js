@@ -1,10 +1,11 @@
-var connection = require('./../config');
+var connection = require('../config/config');
 bcrypt = require('bcrypt');
 const base = {};
+const saltRounds = 10;
 
 base.login = async function (req, res) {
     let userData = {email: req.body.email, password: req.body.password};
-    connection.query('SELECT * FROM users WHERE email = ?',[email], function (error, results, fields) {
+    connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
         if (error) {
             res.json({
                 status:false,
@@ -16,7 +17,7 @@ base.login = async function (req, res) {
                     res.json({
                         status:true,
                         message:'Successfully authenticated'
-                    })
+                    });
                 }else{
                     res.json({
                         status:false,
@@ -31,10 +32,10 @@ base.login = async function (req, res) {
             }
         }   
     });
-}
+};
 
 base.register= async function(req,res){
-        let password = await bcrypt.hash(req.body.password, 10);
+        let password = await bcrypt.hash(req.body.password, saltRounds);
         if (password) {
             req.body.password = password;
         }
