@@ -16,7 +16,8 @@ base.login = async function (req, res) {
                 if (await bcrypt.compare(userData.password, results[0].password)){
                     res.json({
                         status:true,
-                        message:'Successfully authenticated'
+                        data:results,
+                        message: results[0].name + ' you have been successfully authenticated'
                     });
                 }else{
                     res.json({
