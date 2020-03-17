@@ -1,23 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SmartCity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="registar"><u>Registar</u></string>
-    <string name="assunto">Assunto</string>
-    <string name="abreviar_acontecimento">Abreviar acontecimento</string>
-    <string name="rua">Rua</string>
-    <string name="nome_da_rua">Nome da rua</string>
-    <string name="localidade">Localidade</string>
-    <string name="distrito_ou_cidade">Distrito ou Cidade</string>
+    <string name="registar"><u>Register</u></string>
+    <string name="assunto">Subject</string>
+    <string name="abreviar_acontecimento">abbreviate subject</string>
+    <string name="rua">Street</string>
+    <string name="nome_da_rua">Street Address</string>
+    <string name="localidade">Locale</string>
+    <string name="distrito_ou_cidade">District/City</string>
     <string name="c_digo_postal">Código Postal</string>
     <string name="data">Data</string>
     <string name="observa_es">Observações</string>
     <string name="guardar">Guardar</string>
     <string name="rua_show">Rua:</string>
-    <string name="localidade_show">Localidade:</string>
-    <string name="cod_postal_show">Cod.Postal:</string>
-    <string name="data_show">Data:</string>
     <string name="preencha_form_register">Preencha o form abaixo!</string>
     <string name="nome">Nome</string>
     <string name="email">Email</string>

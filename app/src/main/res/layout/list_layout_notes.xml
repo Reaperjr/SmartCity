@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Assunto"
+            android:text="@string/assunto"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
         <RelativeLayout
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Rua:"
+                android:text="@string/rua_show"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
 
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Localidade:"
+                android:text="@string/localidade_show"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:layout_below="@id/morada" />
 
@@ -61,8 +61,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_toLeftOf="@id/data"
-                android:layout_toEndOf="@id/codpostal"
-                android:text="4920-062" />
+                android:layout_toEndOf="@id/codpostal" />
 
             <TextView
                 android:id="@+id/textMorada"
@@ -70,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Rua da Mota nº117"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:layout_toEndOf="@id/morada" />
 
@@ -80,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Cod.Postal:"
+                android:text="@string/cod_postal_show"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:layout_below="@id/localidade"/>
 
@@ -91,7 +89,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Vila Nova de Cerveira"
                 android:layout_toEndOf="@id/localidade"
                 android:layout_below="@id/textMorada"/>
 
@@ -101,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textLocalidade"
                 android:layout_marginTop="8dp"
-                android:text="Data:"
+                android:text="@string/data_show"
                 android:layout_marginStart="130dp"
                 android:layout_toRightOf="@id/codpostal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
@@ -113,7 +110,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="20/02/2020"
                 android:layout_toEndOf="@id/data"
                 android:layout_below="@id/textLocalidade"/>
 
@@ -123,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"
-                android:text="Observações"
+                android:text="@string/observa_es"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                android:layout_below="@id/codpostal" />
 
@@ -135,7 +131,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="A seguir a subida de paralelo do sentido de quem entra encontra-se uma pedra que pertence a um muro muita saída para fora "
                 android:layout_below="@id/observacoes"/>
         </RelativeLayout>
     </RelativeLayout>

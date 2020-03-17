@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:text="Fill the form down!"
+        android:text="@string/preencha_form_register"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
         android:layout_below="@id/textDesc"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="75dp"
-        android:text="Name"
+        android:text="@string/nome"
         android:textStyle="bold" />
 
     <EditText
@@ -36,7 +36,6 @@
         android:layout_below="@id/textName"
         android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="Name"
         android:inputType="textPersonName" />
 
     <TextView
@@ -47,7 +46,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/editName"
         android:layout_marginTop="10dp"
-        android:text="Email"
+        android:text="@string/email"
         android:textStyle="bold" />
 
     <EditText
@@ -58,7 +57,6 @@
         android:layout_below="@id/textemail"
         android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="Email"
         android:inputType="textPersonName" />
 
     <TextView
@@ -69,7 +67,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/editEmail"
         android:layout_marginTop="10dp"
-        android:text="Password"
+        android:text="@string/password"
         android:textStyle="bold" />
 
     <EditText
@@ -80,7 +78,6 @@
         android:layout_alignStart="@+id/editName"
         android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="Password"
         android:inputType="textPassword" />
 
     <Button
@@ -92,6 +89,6 @@
         android:layout_alignEnd="@id/editPassword"
         android:layout_marginTop="60dp"
         android:background="@drawable/button_round"
-        android:text="Register" />
+        android:text="@string/registar" />
 
 </RelativeLayout>
