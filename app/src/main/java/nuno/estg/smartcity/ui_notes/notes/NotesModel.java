@@ -1,4 +1,4 @@
-package nuno.estg.smartcity.ui.notes;
+package nuno.estg.smartcity.ui_notes.notes;
 
 import java.io.Serializable;
 

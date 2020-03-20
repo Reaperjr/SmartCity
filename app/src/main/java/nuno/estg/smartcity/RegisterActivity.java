@@ -26,9 +26,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import nuno.estg.smartcity.MainActivity;
-import nuno.estg.smartcity.R;
-
 public class RegisterActivity extends AppCompatActivity {
 
     EditText name,user, password;

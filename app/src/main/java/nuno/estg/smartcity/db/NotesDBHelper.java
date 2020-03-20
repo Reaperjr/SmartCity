@@ -5,12 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import nuno.estg.smartcity.ui.notes.NotesModel;
+import nuno.estg.smartcity.ui_notes.notes.NotesModel;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NotesDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "notes.db";

@@ -1,18 +1,21 @@
 package nuno.estg.smartcity;
 
-import androidx.fragment.app.Fragment;
-import android.os.Bundle;
-import android.view.MenuItem;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import nuno.estg.smartcity.ui.notes.NotesFragment;
-import nuno.estg.smartcity.ui.notifications.NotificationsFragment;
+import androidx.fragment.app.Fragment;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.fragment.app.FragmentManager;
+
+
+import android.os.Bundle;
+import android.view.MenuItem;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import nuno.estg.smartcity.ui_main.MapHome;
+import nuno.estg.smartcity.ui_main.NotificationsFragmentMain;
+
+
+public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,31 +25,27 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(navListener);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, new NotesFragment()).commit();
-
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, new MapHome()).commit();
 
     }
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             Fragment selectedFragment = null;
 
             switch (menuItem.getItemId()) {
-                case R.id.navigation_home:
-                    selectedFragment = new NotesFragment();
+                case R.id.navigation_home_map:
+                    selectedFragment = new MapHome();
                     break;
-               case R.id.navigation_dashboard:
-                    selectedFragment = new NotificationsFragment();
+                case R.id.navigation_add_map:
+                    selectedFragment = new NotificationsFragmentMain();
                     break;
-                case R.id.navigation_notifications:
-                    selectedFragment = new NotificationsFragment();
+                case R.id.navigation_list_map:
+                    selectedFragment = new NotificationsFragmentMain();
                     break;
             }
-             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             return true;
         }
     };
-
 }

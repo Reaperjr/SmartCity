@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="nuno.estg.smartcity.ui.notes.NotesFragment"
+        android:name="nuno.estg.smartcity.ui_notes.notes.NotesFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_notes" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="nuno.estg.smartcity.ui.notes.AddNoteFragment"
+        android:name="nuno.estg.smartcity.ui_notes.notes.AddNoteFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/add_note_fragment" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="nuno.estg.smartcity.ui.notifications.NotificationsFragment"
+        android:name="nuno.estg.smartcity.ui_notes.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

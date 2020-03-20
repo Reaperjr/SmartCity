@@ -23,15 +23,13 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText user, password;
-    Button bt1;
+    Button bt1, bt2;
     private Context context;
     String email, pass;
 
@@ -42,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         user = (EditText) findViewById(R.id.editEmail);
         password = (EditText) findViewById(R.id.editPassword);
         bt1 = (Button) findViewById(R.id.buttonLogin);
+        bt2 = (Button) findViewById(R.id.buttonAnonimo);
 
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +48,13 @@ public class LoginActivity extends AppCompatActivity {
                 email = user.getText().toString();
                 pass = password.getText().toString();
                 login(email,pass);
+            }
+        });
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivityNotes.class);
+                startActivity(intent);
             }
         });
     }

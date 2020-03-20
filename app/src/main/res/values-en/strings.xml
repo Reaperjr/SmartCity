@@ -11,13 +11,18 @@
     <string name="nome_da_rua">Street Address</string>
     <string name="localidade">Locale</string>
     <string name="distrito_ou_cidade">District/City</string>
-    <string name="c_digo_postal">Código Postal</string>
-    <string name="data">Data</string>
-    <string name="observa_es">Observações</string>
-    <string name="guardar">Guardar</string>
-    <string name="rua_show">Rua:</string>
-    <string name="preencha_form_register">Preencha o form abaixo!</string>
-    <string name="nome">Nome</string>
+    <string name="c_digo_postal">Postal Code</string>
+    <string name="data">e</string>
+    <string name="observa_es">Observations</string>
+    <string name="guardar">Save</string>
+    <string name="rua_show">Street:</string>
+    <string name="preencha_form_register">Fill the form below!</string>
+    <string name="localidade_show">Locale:</string>
+    <string name="cod_postal_show">Postal Code:</string>
+    <string name="data_show">Date:</string>
+    <string name="nome">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="add_location">Add Location</string>
+    <string name="subsmiss_es">List</string>
 </resources>

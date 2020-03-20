@@ -11,18 +11,18 @@
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nav_view_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:windowBackground"
         android:fitsSystemWindows="true"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_main" />
+        app:menu="@menu/bottom_nav_menu" />
 
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/fragment_container_notes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/nav_view" />
+        android:layout_above="@id/nav_view_notes" />
 
 </RelativeLayout>

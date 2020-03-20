@@ -1,4 +1,4 @@
-package nuno.estg.smartcity.ui.notes;
+package nuno.estg.smartcity.ui_notes.notes;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;

@@ -69,4 +69,15 @@
         android:clickable="true"
         android:focusable="true" />
 
+    <Button
+        android:id="@+id/buttonAnonimo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textRegistar"
+        android:layout_alignStart="@+id/editPassword"
+        android:layout_alignEnd="@id/editPassword"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button_round"
+        android:text="Anonymous" />
+
 </RelativeLayout>

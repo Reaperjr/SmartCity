@@ -1,9 +1,10 @@
-package nuno.estg.smartcity.ui.notes;
+package nuno.estg.smartcity.ui_notes.notes;
 
 import android.app.DatePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,20 +12,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import nuno.estg.smartcity.R;
 import nuno.estg.smartcity.db.NotesManagerDB;
 
-public class UpdateNoteFragment extends Fragment {
+public class AddNoteFragment extends Fragment {
 
     EditText assunto, rua, local, codpostal, data, obs;
     private SQLiteDatabase database;
@@ -36,9 +35,8 @@ public class UpdateNoteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.add_note_fragment, container, false);
-        getActivity().setTitle("Update Note");
+        getActivity().setTitle("Add Note");
         setHasOptionsMenu(true);
-
 
         assunto = root.findViewById(R.id.editAssunto);
         rua = root.findViewById(R.id.editRua);
@@ -47,16 +45,6 @@ public class UpdateNoteFragment extends Fragment {
         data = root.findViewById(R.id.editData);
         obs = root.findViewById(R.id.editObs);
         saveBtn = root.findViewById(R.id.button2);
-
-        Bundle bundle = getArguments();
-        NotesModel note = (NotesModel) bundle.getSerializable("note");
-        assunto.setText(note.getAssunto());
-        rua.setText(note.getRua());
-        local.setText(note.getLocal());
-        codpostal.setText(note.getCodpostal());
-        data.setText(note.getData());
-        obs.setText(note.getObs());
-        final int id = note.getId();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -80,7 +68,7 @@ public class UpdateNoteFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               update(id,assunto.getText().toString(), rua.getText().toString(), local.getText().toString(), codpostal.getText().toString(), data.getText().toString(), obs.getText().toString());
+                save(assunto.getText().toString(), rua.getText().toString(), local.getText().toString(), codpostal.getText().toString(), data.getText().toString(), obs.getText().toString());
             }
         });
 
@@ -95,7 +83,7 @@ public class UpdateNoteFragment extends Fragment {
         data.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private void update(int id, String assunto,String rua, String local, String codpostal, String data, String obs)
+    private void save(String assunto,String rua, String local, String codpostal, String data, String obs)
     {
         NotesManagerDB db=new NotesManagerDB(getContext());
 
@@ -103,11 +91,11 @@ public class UpdateNoteFragment extends Fragment {
         db.openDB();
 
         //COMMIT
-        long result=db.update(id,assunto, rua, local, codpostal, data, obs);
+        long result=db.insert(assunto, rua, local, codpostal, data, obs);
 
         if(result>0)
         {
-            Toast.makeText(getContext(), "Updated with success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Inserted with success", Toast.LENGTH_SHORT).show();
             return;
 
         }else
