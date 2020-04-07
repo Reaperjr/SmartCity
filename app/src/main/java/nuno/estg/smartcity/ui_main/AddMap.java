@@ -6,6 +6,9 @@ import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,19 +28,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import nuno.estg.smartcity.R;
+import nuno.estg.smartcity.ui_notes.notes.AddNoteFragment;
 
 
 public class AddMap extends Fragment{
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap googleMap;
-    Geocoder geo;
     MapView mMapView;
     private UiSettings mUiSettings;
+    private double lat, lng;
     private boolean mPermissionDenied = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment_home, container, false);
+        setHasOptionsMenu(true);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mMapView = (MapView) root.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -105,11 +111,41 @@ public class AddMap extends Fragment{
 
                         // Placing a marker on the touched position
                         googleMap.addMarker(markerOptions);
+                        lat = latLng.latitude;
+                        lng = latLng.longitude;
                     }
                 });
             }
         });
         return root;
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.add_map_info, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.addMapInfo) {
+            FragmentTransaction ft =  getActivity().getSupportFragmentManager().beginTransaction();
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            AddMapInfoFragment frag = new AddMapInfoFragment();
+            Bundle bundle = new Bundle();
+            bundle.putDouble("lat", lat);
+            bundle.putDouble("lng", lng);
+            frag.setArguments(bundle);
+            ft.replace(R.id.fragment_container, frag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
