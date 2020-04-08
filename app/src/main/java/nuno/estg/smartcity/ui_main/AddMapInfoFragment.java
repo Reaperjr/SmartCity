@@ -33,10 +33,12 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -118,15 +120,17 @@ public class AddMapInfoFragment extends Fragment {
         return root;
 
     }
-    private void submit(final String email, final String pass) {
+    private void submit(final String assunto, final String pass, final double lat, final double lng, final Text obs, final int userid, final Date date) {
         final String url = "http://192.168.1.66:3000/api/submission/submit";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JSONObject params = new JSONObject();
         try {
-            params.put("assunto", email);
-            params.put("lat", pass);
-            params.put("lng", email);
-            params.put("obs", pass);
+            params.put("assunto", assunto);
+            params.put("lat", lat);
+            params.put("lng", lng);
+            params.put("obs", obs);
+            params.put("id_user", userid);
+            params.put("data", date);
         } catch (JSONException e) {
             e.printStackTrace();
         }

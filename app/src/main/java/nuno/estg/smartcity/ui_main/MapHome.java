@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -17,6 +18,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -27,6 +34,10 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import nuno.estg.smartcity.R;
 
 
@@ -114,6 +125,37 @@ public class MapHome extends Fragment{
             }
         });
         return root;
+    }
+    public void getData(){
+        final String url = "http://192.168.1.66:3000/api/submission/submit";
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        try {
+            JsonObjectRequest rq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    JSONArray data = response.getJSONArray("data");
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject object = data.getJSONObject(i);
+                        utente.setID(object.getString("idut"));
+                        utente.setNome(object.getString("nome"));
+                        utente.setNivel(object.getString("nivel"));
+                        utente.setNumero(object.getString("numUtente"));
+                        utente.setFPN(object.getString("id_fpn"));
+                        utente.setCC(object.getString("cc"));
+                        utente.setNIF(object.getString("nif"));
+                        mUtentes.add(utente);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(rq);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
