@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import nuno.estg.smartcity.ui_notes.notes.NotesFragment;
-import nuno.estg.smartcity.ui_notes.notifications.NotificationsFragment;
 
 public class MainActivityNotes extends AppCompatActivity {
 
@@ -36,12 +35,6 @@ public class MainActivityNotes extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.navigation_home:
                     selectedFragment = new NotesFragment();
-                    break;
-               case R.id.navigation_dashboard:
-                    selectedFragment = new NotificationsFragment();
-                    break;
-                case R.id.navigation_notifications:
-                    selectedFragment = new NotificationsFragment();
                     break;
             }
              getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_notes, selectedFragment).commit();

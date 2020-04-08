@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,25 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+import nuno.estg.smartcity.MainActivity;
 import nuno.estg.smartcity.R;
 import nuno.estg.smartcity.db.NotesManagerDB;
 
@@ -51,6 +66,7 @@ public class AddMapInfoFragment extends Fragment {
         Bundle bundle = getArguments();
         lat = bundle.getDouble("lat");
         lng = bundle.getDouble("lng");
+        Log.d("ADebugTag", "Lat: " + Double.toString(lat) + "Lng:" + Double.toString(lng) );
         assunto = root.findViewById(R.id.editAssuntoMap);
         data = root.findViewById(R.id.editDataMap);
         obs = root.findViewById(R.id.editObsMap);
@@ -101,6 +117,58 @@ public class AddMapInfoFragment extends Fragment {
 
         return root;
 
+    }
+    private void submit(final String email, final String pass) {
+        final String url = "http://192.168.1.66:3000/api/submission/submit";
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        JSONObject params = new JSONObject();
+        try {
+            params.put("assunto", email);
+            params.put("lat", pass);
+            params.put("lng", email);
+            params.put("obs", pass);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest rq = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    final boolean success = response.getBoolean("status");
+                    Log.d("Response", String.valueOf(success));
+                    if (success == true) {
+                        Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } else if (success == false) {
+                        Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                        Log.d("Response", response.toString());
+                    }
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+/*
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", uname);
+                params.put("password", upass);
+                return params;
+            }*/
+        };
+        //MySingleton.getInctance(getActivity().getApplicationContext()).addToRequestQueue(rq);
+        queue.add(rq);
     }
     private void startGallery() {
         Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
