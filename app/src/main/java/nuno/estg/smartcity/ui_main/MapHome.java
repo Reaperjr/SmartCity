@@ -36,7 +36,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import nuno.estg.smartcity.R;
 
@@ -44,18 +48,20 @@ import nuno.estg.smartcity.R;
 public class MapHome extends Fragment{
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap googleMap;
-    Geocoder geo;
     MapView mMapView;
     private UiSettings mUiSettings;
-    private boolean mPermissionDenied = false;
+    private List<SubmissionModel> mSubmssionModel = new ArrayList<>();
+    private String assunto, obs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment_home, container, false);
+        getData();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mMapView = (MapView) root.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
+
        /* try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -89,61 +95,51 @@ public class MapHome extends Fragment{
                 mUiSettings.setZoomGesturesEnabled(true);
                 mUiSettings.setRotateGesturesEnabled(true);
 
-                // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+                for (SubmissionModel subm: mSubmssionModel){
+                    subm.getAssunto();
+                    subm.getLat();
+                    subm.getLng();
+                    subm.getObs();
+                    LatLng latLng = new LatLng(subm.getLat(), subm.getLng());
+                    googleMap.addMarker(new MarkerOptions().position(latLng).title(subm.getAssunto()).snippet(subm.getObs()));
+                }
 
-                // For zooming automatically to the location of the marker
+                /*// For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-
-                        // Creating a marker
-                        MarkerOptions markerOptions = new MarkerOptions();
-
-                        // Setting the position for the marker
-                        markerOptions.position(latLng);
-
-                        // Setting the title for the marker.
-                        // This will be displayed on taping the marker
-                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-
-                        // Clears the previously touched position
-                        googleMap.clear();
-
-                        // Animating to the touched position
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-                        // Placing a marker on the touched position
-                        googleMap.addMarker(markerOptions);
-                    }
-                });
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
             }
         });
         return root;
     }
     public void getData(){
-        final String url = "http://192.168.1.66:3000/api/submission/submit";
+        final String url = "http://192.168.1.66:3000/api/submission/get";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         try {
             JsonObjectRequest rq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    JSONArray data = response.getJSONArray("data");
+                    JSONArray data = null;
+                    try {
+                        data = response.getJSONArray("data");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     for (int i = 0; i < data.length(); i++) {
-                        JSONObject object = data.getJSONObject(i);
-                        utente.setID(object.getString("idut"));
-                        utente.setNome(object.getString("nome"));
-                        utente.setNivel(object.getString("nivel"));
-                        utente.setNumero(object.getString("numUtente"));
-                        utente.setFPN(object.getString("id_fpn"));
-                        utente.setCC(object.getString("cc"));
-                        utente.setNIF(object.getString("nif"));
-                        mUtentes.add(utente);
+                        JSONObject object = null;
+                        try {
+                            object = data.getJSONObject(i);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        SubmissionModel submissionModel = new SubmissionModel();
+                        submissionModel.setId_submission(object.optInt("id_submission"));
+                        submissionModel.setAssunto(object.optString("assunto"));
+                        submissionModel.setLat(object.optDouble("lat"));
+                        submissionModel.setLng(object.optDouble("lng"));
+                        submissionModel.setObs(object.optString("obs"));
+                        submissionModel.setId_user(object.optInt("id_user"));
+                        submissionModel.setData(object.optString("data"));
+                        mSubmssionModel.add(submissionModel);
                     }
                 }
             }, new Response.ErrorListener() {
