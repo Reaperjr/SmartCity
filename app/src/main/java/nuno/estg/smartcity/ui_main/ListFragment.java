@@ -1,14 +1,14 @@
 package nuno.estg.smartcity.ui_main;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -19,40 +19,46 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import nuno.estg.smartcity.R;
-import nuno.estg.smartcity.db.NotesDBHelper;
-import nuno.estg.smartcity.db.NotesManagerDB;
-import nuno.estg.smartcity.ui_notes.notes.AddNoteFragment;
-import nuno.estg.smartcity.ui_notes.notes.NotesModel;
-import nuno.estg.smartcity.ui_notes.notes.RecyclerViewNotes;
 import nuno.estg.smartcity.ui_notes.notes.UpdateNoteFragment;
 
 
 public class ListFragment extends Fragment {
-    SQLiteDatabase db;
     RecyclerView recyclerView;
-    RecyclerViewNotes adapter;
-    List<NotesModel> NotesModel;
-
+    RecyclerViewSubm adapter;
+    private List<SubmissionModel> mSubmssionModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_notes, container, false);
-        getActivity().setTitle("Notes");
-        setHasOptionsMenu(true);
-        NotesDBHelper dbhelper = new NotesDBHelper(getActivity());
-        db = dbhelper.getWritableDatabase();
-        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerViewNotes);
+        View root = inflater.inflate(R.layout.fragment_info_map, container, false);
+        getActivity().setTitle("List Submissões");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+       /* id = sharedPreferences.getInt("id", 0);
+        Log.d("ResponseList", String.valueOf(id));*/
+        getData();
+        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerViewMap);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        NotesModel = dbhelper.fill();
-
-        adapter = new RecyclerViewNotes(getContext(), NotesModel);
+        mSubmssionModel = new ArrayList<>();
+        adapter = new RecyclerViewSubm(getContext(), mSubmssionModel);
         recyclerView.setAdapter(adapter);
-        //adapter.swapCursor(getAllNotes());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
@@ -60,6 +66,60 @@ public class ListFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return root;
+    }
+    public void getData() {
+        final String url = "http://192.168.1.66:3000/api/submission";
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        try {
+            JsonObjectRequest rq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        final boolean success = response.getBoolean("status");
+                        Log.d("ResponseList", String.valueOf(success));
+                        if (success == true) {
+                            JSONArray data = null;
+                            try {
+                                data = response.getJSONArray("data");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject object = null;
+                                try {
+                                    object = data.getJSONObject(i);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                SubmissionModel model = new SubmissionModel();
+                                model.setId_submission(object.optInt("id_submission"));
+                                model.setAssunto(object.optString("assunto"));
+                                model.setLat(object.optDouble("lat"));
+                                model.setLng(object.optDouble("lng"));
+                                model.setObs(object.optString("obs"));
+                                model.setId_user(object.optInt("id_user"));
+                                model.setData(object.optString("data"));
+                                mSubmssionModel.add(model);
+                            }
+                        } else if (success == false) {
+                            Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Log.d("Response", response.toString());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(rq);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -71,14 +131,13 @@ public class ListFragment extends Fragment {
 
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             final int position = viewHolder.getAdapterPosition();
-            NotesModel note = NotesModel.get(position);
+            SubmissionModel note = mSubmssionModel.get(position);
 
             switch (direction){
                 case ItemTouchHelper.LEFT:
-                    delete(note.getId());
-                    NotesModel.remove(position);
+                    mSubmssionModel.remove(position);
                     adapter.notifyItemRemoved(position);
-                    adapter.notifyItemRangeChanged(position, NotesModel.size());
+                    adapter.notifyItemRangeChanged(position, mSubmssionModel.size());
                     break;
                 case ItemTouchHelper.RIGHT:
                     FragmentTransaction ft =  getActivity().getSupportFragmentManager().beginTransaction();
@@ -101,7 +160,7 @@ public class ListFragment extends Fragment {
             new RecyclerViewSwipeDecorator.Builder(getActivity(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorAccent))
                     .addSwipeLeftActionIcon(R.drawable.ic_delete_sweep_black_24dp)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryDark))
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark))
                     .addSwipeRightActionIcon(R.drawable.edit_24dp)
                     .create()
                     .decorate();
@@ -109,47 +168,5 @@ public class ListFragment extends Fragment {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
-
-    private void delete(int id)
-    {
-        NotesManagerDB db=new NotesManagerDB(getContext());
-
-        //OPEN DB
-        db.openDB();
-
-        //COMMIT
-        int result=db.delete(id);
-
-        if(result>0)
-        {
-            return;
-
-        }else
-        {
-            //Toast.makeText(getContext(), "Error in deleting", Toast.LENGTH_SHORT).show();
-        }
-
-        db.closeDB();
-
-    }
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.add_note, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.addNote) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container_notes, new AddNoteFragment()).addToBackStack(null).commit();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
 }

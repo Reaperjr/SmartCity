@@ -2,9 +2,12 @@ package nuno.estg.smartcity.ui_main;
 
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -51,7 +54,6 @@ public class MapHome extends Fragment{
     MapView mMapView;
     private UiSettings mUiSettings;
     private List<SubmissionModel> mSubmssionModel = new ArrayList<>();
-    private String assunto, obs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -111,35 +113,47 @@ public class MapHome extends Fragment{
         });
         return root;
     }
-    public void getData(){
-        final String url = "http://192.168.1.66:3000/api/submission/get";
+    public void getData() {
+        final String url = "http://192.168.1.66:3000/api/submission";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         try {
             JsonObjectRequest rq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    JSONArray data = null;
                     try {
-                        data = response.getJSONArray("data");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject object = null;
-                        try {
-                            object = data.getJSONObject(i);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        final boolean success = response.getBoolean("status");
+                        Log.d("ResponseList", String.valueOf(success));
+                        if (success == true) {
+                            JSONArray data = null;
+                            try {
+                                data = response.getJSONArray("data");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject object = null;
+                                try {
+                                    object = data.getJSONObject(i);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                SubmissionModel submissionModel = new SubmissionModel();
+                                submissionModel.setId_submission(object.optInt("id_submission"));
+                                Log.d("Response", String.valueOf(submissionModel.getId_submission()));
+                                submissionModel.setAssunto(object.optString("assunto"));
+                                submissionModel.setLat(object.optDouble("lat"));
+                                submissionModel.setLng(object.optDouble("lng"));
+                                submissionModel.setObs(object.optString("obs"));
+                                submissionModel.setId_user(object.optInt("id_user"));
+                                submissionModel.setData(object.optString("data"));
+                                mSubmssionModel.add(submissionModel);
+                            }
+                        } else if (success == false) {
+                            Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Log.d("Response", response.toString());
                         }
-                        SubmissionModel submissionModel = new SubmissionModel();
-                        submissionModel.setId_submission(object.optInt("id_submission"));
-                        submissionModel.setAssunto(object.optString("assunto"));
-                        submissionModel.setLat(object.optDouble("lat"));
-                        submissionModel.setLng(object.optDouble("lng"));
-                        submissionModel.setObs(object.optString("obs"));
-                        submissionModel.setId_user(object.optInt("id_user"));
-                        submissionModel.setData(object.optString("data"));
-                        mSubmssionModel.add(submissionModel);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }, new Response.ErrorListener() {
@@ -149,6 +163,7 @@ public class MapHome extends Fragment{
                 }
             });
             queue.add(rq);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
