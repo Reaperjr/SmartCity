@@ -12,7 +12,7 @@
     <string name="localidade">Locale</string>
     <string name="distrito_ou_cidade">District/City</string>
     <string name="c_digo_postal">Postal Code</string>
-    <string name="data">e</string>
+    <string name="data">Date</string>
     <string name="observa_es">Observations</string>
     <string name="guardar">Save</string>
     <string name="rua_show">Street:</string>

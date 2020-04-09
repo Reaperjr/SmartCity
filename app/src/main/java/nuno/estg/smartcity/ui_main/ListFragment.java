@@ -1,4 +1,4 @@
-package nuno.estg.smartcity.ui_notes.notes;
+package nuno.estg.smartcity.ui_main;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
@@ -25,9 +25,13 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import nuno.estg.smartcity.R;
 import nuno.estg.smartcity.db.NotesDBHelper;
 import nuno.estg.smartcity.db.NotesManagerDB;
+import nuno.estg.smartcity.ui_notes.notes.AddNoteFragment;
+import nuno.estg.smartcity.ui_notes.notes.NotesModel;
+import nuno.estg.smartcity.ui_notes.notes.RecyclerViewNotes;
+import nuno.estg.smartcity.ui_notes.notes.UpdateNoteFragment;
 
 
-public class NotesFragment extends Fragment {
+public class ListFragment extends Fragment {
     SQLiteDatabase db;
     RecyclerView recyclerView;
     RecyclerViewNotes adapter;
