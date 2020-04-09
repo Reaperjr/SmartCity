@@ -21,6 +21,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'net.gotev:uploadservice:2.1'
     implementation 'com.android.support:cardview-v7:29.1.0'
     implementation 'com.android.support:appcompat-v7:29.1.0'
     implementation 'com.android.support:design:29.1.0'

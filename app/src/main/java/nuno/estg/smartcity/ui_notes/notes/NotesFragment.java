@@ -141,7 +141,7 @@ public class NotesFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.addNote) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, new AddNoteFragment()).addToBackStack(null).commit();
+            transaction.replace(R.id.fragment_container_notes, new AddNoteFragment()).addToBackStack(null).commit();
         }
 
         return super.onOptionsItemSelected(item);

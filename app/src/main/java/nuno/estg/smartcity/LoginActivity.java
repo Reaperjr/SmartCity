@@ -3,7 +3,9 @@ package nuno.estg.smartcity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText user, password;
     Button bt1, bt2;
-    private Context context;
     String email, pass;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,22 @@ public class LoginActivity extends AppCompatActivity {
                     final boolean success = response.getBoolean("status");
                     Log.d("Response", String.valueOf(success));
                     if (success == true) {
+                        JSONArray data = null;
+                        try {
+                            data = response.getJSONArray("data");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        int id ;
+                        JSONObject object =
+                                data.getJSONObject(0);
+                        id = object.optInt("id_user");
+                        Log.d("Tag", String.valueOf(id));
                         Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("id", id);
+                        editor.apply();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     } else if (success == false) {

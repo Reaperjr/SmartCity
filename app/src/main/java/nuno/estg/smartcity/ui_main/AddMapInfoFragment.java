@@ -2,12 +2,15 @@ package nuno.estg.smartcity.ui_main;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,7 +58,10 @@ public class AddMapInfoFragment extends Fragment {
     Button saveBtn, chooseImg;
     ImageView img;
     private double lat,lng;
+    private int id;
     final Calendar myCalendar = Calendar.getInstance();
+    String assuntos, obss, dates;
+
 
 
 
@@ -64,7 +70,8 @@ public class AddMapInfoFragment extends Fragment {
         View root = inflater.inflate(R.layout.add_map_info, container, false);
         getActivity().setTitle("Add Submission");
         setHasOptionsMenu(true);
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        id = sharedPreferences.getInt("id",0);
         Bundle bundle = getArguments();
         lat = bundle.getDouble("lat");
         lng = bundle.getDouble("lng");
@@ -113,14 +120,17 @@ public class AddMapInfoFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                assuntos = assunto.getText().toString();
+                obss = obs.getText().toString();
+                dates = data.getText().toString();
+                submit(assuntos, lat, lng, obss, id, dates);
             }
         });
 
         return root;
 
     }
-    private void submit(final String assunto, final String pass, final double lat, final double lng, final Text obs, final int userid, final Date date) {
+    private void submit(final String assunto, final double lat, final double lng, final String obs, int userid, final String date) {
         final String url = "http://192.168.1.66:3000/api/submission/submit";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JSONObject params = new JSONObject();
