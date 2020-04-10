@@ -138,7 +138,7 @@ public class MapHome extends Fragment{
                                     e.printStackTrace();
                                 }
                                 SubmissionModel submissionModel = new SubmissionModel();
-                                submissionModel.setId_submission(object.optInt("id_submission"));
+                                submissionModel.setId_submission(object.optInt("id_submissions"));
                                 Log.d("Response", String.valueOf(submissionModel.getId_submission()));
                                 submissionModel.setAssunto(object.optString("assunto"));
                                 submissionModel.setLat(object.optDouble("lat"));
