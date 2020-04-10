@@ -68,7 +68,6 @@ public class ListFragment extends Fragment {
     public void getData(int id) {
         final String url = "http://192.168.1.66:3000/api/submission/" + id;
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-
         try {
             JsonObjectRequest rq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -173,11 +172,11 @@ public class ListFragment extends Fragment {
                 case ItemTouchHelper.RIGHT:
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    UpdateNoteFragment frag = new UpdateNoteFragment();
+                    UpdateMapInfoFragment frag = new UpdateMapInfoFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("subm", subm);
+                    bundle.putSerializable("info", subm);
                     frag.setArguments(bundle);
-                    ft.replace(R.id.fragment_container_notes, frag);
+                    ft.replace(R.id.fragment_container, frag);
                     ft.addToBackStack(null);
                     ft.commit();
                     break;
