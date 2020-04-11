@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -60,7 +62,7 @@ public class AddMapInfoFragment extends Fragment {
     private double lat,lng;
     private int id;
     final Calendar myCalendar = Calendar.getInstance();
-    String assuntos, obss, dates;
+    String assuntos, obss, dates, imgs;
 
 
 
@@ -123,14 +125,14 @@ public class AddMapInfoFragment extends Fragment {
                 assuntos = assunto.getText().toString();
                 obss = obs.getText().toString();
                 dates = data.getText().toString();
-                submit(assuntos, lat, lng, obss, id, dates);
+                submit(assuntos, lat, lng, obss, id, imgs, dates);
             }
         });
 
         return root;
 
     }
-    private void submit(final String assunto, final double lat, final double lng, final String obs, int userid, final String date) {
+    private void submit(final String assunto, final double lat, final double lng, final String obs, int userid,final String img, final String date) {
         final String url = "http://192.168.1.66:3000/api/submission/submit";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JSONObject params = new JSONObject();
@@ -139,6 +141,7 @@ public class AddMapInfoFragment extends Fragment {
             params.put("lat", lat);
             params.put("lng", lng);
             params.put("obs", obs);
+            params.put("img", img);
             params.put("id_user", userid);
             params.put("data", date);
         } catch (JSONException e) {
@@ -203,10 +206,17 @@ public class AddMapInfoFragment extends Fragment {
                     e.printStackTrace();
                 }
                 img.setImageBitmap(bitmapImage);
+                imgs = convertImg(bitmapImage);
             }
         }
     }
-
+    public String convertImg(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+        byte[] b = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(b , Base64.DEFAULT);
+        return encodedImage;
+    }
     private void updateLabel() {
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);

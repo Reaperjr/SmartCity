@@ -3,14 +3,13 @@ package nuno.estg.smartcity.ui_main;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +36,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,17 +45,13 @@ import java.util.Locale;
 import java.util.Map;
 
 import nuno.estg.smartcity.R;
-import nuno.estg.smartcity.db.NotesManagerDB;
-import nuno.estg.smartcity.ui_notes.notes.NotesModel;
 
 import static android.app.Activity.RESULT_OK;
 
 public class UpdateMapInfoFragment extends Fragment {
 
     EditText assunto, data, obs;
-    Button saveBtn, chooseImg;
-    ImageView img;
-    private double lat,lng;
+    Button saveBtn;
     private int id;
     final Calendar myCalendar = Calendar.getInstance();
     String assuntos, obss, dates;
@@ -68,30 +64,13 @@ public class UpdateMapInfoFragment extends Fragment {
         assunto = root.findViewById(R.id.editAssuntoMap);
         data = root.findViewById(R.id.editDataMap);
         obs = root.findViewById(R.id.editObsMap);
-        img = root.findViewById(R.id.imageViewMap);
         saveBtn = root.findViewById(R.id.button2Map);
-        chooseImg = root.findViewById(R.id.button3Map);
         Bundle bundle = getArguments();
         SubmissionModel info = (SubmissionModel) bundle.getSerializable("info");
         assunto.setText(info.getAssunto());
         data.setText(info.getData());
         obs.setText(info.getObs());
         id = info.getId_submission();
-                chooseImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(ActivityCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                {
-                    requestPermissions(
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            2000);
-                }
-                else {
-                    startGallery();
-                }
-            }
-        });
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -171,29 +150,6 @@ public class UpdateMapInfoFragment extends Fragment {
         };
         queue.add(rq);
     }
-    private void startGallery() {
-        Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        cameraIntent.setType("image/*");
-        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, 1000);
-        }
-    }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super method removed
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1000) {
-                Uri returnUri = data.getData();
-                Bitmap bitmapImage = null;
-                try {
-                    bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), returnUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                img.setImageBitmap(bitmapImage);
-            }
-        }
-    }
-
     private void updateLabel() {
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);

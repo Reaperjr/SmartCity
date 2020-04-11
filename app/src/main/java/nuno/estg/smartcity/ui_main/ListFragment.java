@@ -95,6 +95,7 @@ public class ListFragment extends Fragment {
                                 model.setLat(object.optDouble("lat"));
                                 model.setLng(object.optDouble("lng"));
                                 model.setObs(object.optString("obs"));
+                                model.setImg(object.optString("img"));
                                 model.setId_user(object.optInt("id_user"));
                                 model.setData(object.optString("data"));
                                 mSubmssionModel.add(model);

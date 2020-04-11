@@ -1,9 +1,6 @@
 package nuno.estg.smartcity.ui_main;
 
-import org.w3c.dom.Text;
-
 import java.io.Serializable;
-import java.util.Date;
 
 public class SubmissionModel implements Serializable {
 
@@ -12,15 +9,17 @@ public class SubmissionModel implements Serializable {
     private double lat;
     private double lng;
     private String obs;
+    private String img;
     private int id_user;
     private String data;
 
-    public SubmissionModel(int id_submission, String assunto, double lat, double lng, String obs, int id_user, String data) {
+    public SubmissionModel(int id_submission, String assunto, double lat, double lng, String obs, String img, int id_user, String data) {
         this.id_submission = id_submission;
         this.assunto = assunto;
         this.lat = lat;
         this.lng = lng;
         this.obs = obs;
+        this.img = img;
         this.id_user = id_user;
         this.data = data;
     }
@@ -29,6 +28,14 @@ public class SubmissionModel implements Serializable {
     }
     public SubmissionModel() {
 
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public int getId_submission() {

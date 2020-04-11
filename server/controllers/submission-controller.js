@@ -7,7 +7,7 @@ base.submit = async function (req, res) {
     lat: req.body.lat,
     lng: req.body.lng,
     obs: req.body.obs,
-    img: 'teste',
+    img: req.body.img,
     id_user: req.body.id_user,
     data: req.body.data
   }
@@ -87,7 +87,7 @@ base.delete = async function (req, res) {
 
 base.updates = async function (req, res) {
   
-  var data = [req.body.assunto,req.body.obs,'teste', req.body.data, req.body.id_submissions]
+  var data = [req.body.assunto,req.body.obs,req.body.img, req.body.data, req.body.id_submissions]
   connection.query('UPDATE submissions SET assunto=?, obs=?, img=?, data=? WHERE id_submissions=?', data, function (error, results, fields) {
     if (error) {
       res.json({
