@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText name,user, password;
     Button bt1;
-    private Context context;
     String names,email, pass;
 
     protected void onCreate(Bundle savedInstanceState) {

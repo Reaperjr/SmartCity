@@ -48,7 +48,6 @@ public class NotesFragment extends Fragment {
 
         adapter = new RecyclerViewNotes(getContext(), NotesModel);
         recyclerView.setAdapter(adapter);
-        //adapter.swapCursor(getAllNotes());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 

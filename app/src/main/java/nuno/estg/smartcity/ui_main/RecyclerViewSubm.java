@@ -1,13 +1,9 @@
 package nuno.estg.smartcity.ui_main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import nuno.estg.smartcity.R;
-import nuno.estg.smartcity.ui_notes.notes.NotesModel;
 
 public class RecyclerViewSubm extends RecyclerView.Adapter<RecyclerViewSubm.ViewHolder> {
     List<SubmissionModel> submissionModel;
     Context mContext;
-
 
 
     public RecyclerViewSubm(Context context, List<SubmissionModel> submissionModel) {

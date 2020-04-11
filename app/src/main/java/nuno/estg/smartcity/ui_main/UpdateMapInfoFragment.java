@@ -1,15 +1,8 @@
 package nuno.estg.smartcity.ui_main;
 
-import android.Manifest;
+
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -36,8 +27,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -46,16 +35,13 @@ import java.util.Map;
 
 import nuno.estg.smartcity.R;
 
-import static android.app.Activity.RESULT_OK;
-
 public class UpdateMapInfoFragment extends Fragment {
 
+    final Calendar myCalendar = Calendar.getInstance();
     EditText assunto, data, obs;
     Button saveBtn;
-    private int id;
-    final Calendar myCalendar = Calendar.getInstance();
     String assuntos, obss, dates;
-
+    private int id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +91,7 @@ public class UpdateMapInfoFragment extends Fragment {
         return root;
 
     }
+
     private void update(final String assunto, int id, final String obs, final String date) {
         final String url = "http://192.168.1.66:3000/api/submission/updates";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
@@ -150,6 +137,7 @@ public class UpdateMapInfoFragment extends Fragment {
         };
         queue.add(rq);
     }
+
     private void updateLabel() {
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);

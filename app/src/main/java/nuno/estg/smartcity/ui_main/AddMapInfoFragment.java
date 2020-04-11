@@ -2,11 +2,9 @@ package nuno.estg.smartcity.ui_main;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,35 +35,28 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import nuno.estg.smartcity.MainActivity;
 import nuno.estg.smartcity.R;
-import nuno.estg.smartcity.db.NotesManagerDB;
 
 import static android.app.Activity.RESULT_OK;
 
 public class AddMapInfoFragment extends Fragment {
 
+    final Calendar myCalendar = Calendar.getInstance();
     EditText assunto, data, obs;
     Button saveBtn, chooseImg;
     ImageView img;
-    private double lat,lng;
-    private int id;
-    final Calendar myCalendar = Calendar.getInstance();
     String assuntos, obss, dates, imgs;
-
-
-
+    private double lat, lng;
+    private int id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -73,11 +64,11 @@ public class AddMapInfoFragment extends Fragment {
         getActivity().setTitle("Add Submission");
         setHasOptionsMenu(true);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        id = sharedPreferences.getInt("id",0);
+        id = sharedPreferences.getInt("id", 0);
         Bundle bundle = getArguments();
         lat = bundle.getDouble("lat");
         lng = bundle.getDouble("lng");
-        Log.d("ADebugTag", "Lat: " + Double.toString(lat) + "Lng:" + Double.toString(lng) );
+        Log.d("ADebugTag", "Lat: " + lat + "Lng:" + lng);
         assunto = root.findViewById(R.id.editAssuntoMap);
         data = root.findViewById(R.id.editDataMap);
         obs = root.findViewById(R.id.editObsMap);
@@ -87,14 +78,12 @@ public class AddMapInfoFragment extends Fragment {
         chooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ActivityCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                {
+                if (ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             2000);
-                }
-                else {
+                } else {
                     startGallery();
                 }
             }
@@ -132,7 +121,8 @@ public class AddMapInfoFragment extends Fragment {
         return root;
 
     }
-    private void submit(final String assunto, final double lat, final double lng, final String obs, int userid,final String img, final String date) {
+
+    private void submit(final String assunto, final double lat, final double lng, final String obs, int userid, final String img, final String date) {
         final String url = "http://192.168.1.66:3000/api/submission/submit";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JSONObject params = new JSONObject();
@@ -187,6 +177,7 @@ public class AddMapInfoFragment extends Fragment {
         //MySingleton.getInctance(getActivity().getApplicationContext()).addToRequestQueue(rq);
         queue.add(rq);
     }
+
     private void startGallery() {
         Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         cameraIntent.setType("image/*");
@@ -194,6 +185,7 @@ public class AddMapInfoFragment extends Fragment {
             startActivityForResult(cameraIntent, 1000);
         }
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super method removed
         if (resultCode == RESULT_OK) {
@@ -210,13 +202,15 @@ public class AddMapInfoFragment extends Fragment {
             }
         }
     }
-    public String convertImg(Bitmap bitmap){
+
+    public String convertImg(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(b , Base64.DEFAULT);
+        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
         return encodedImage;
     }
+
     private void updateLabel() {
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);

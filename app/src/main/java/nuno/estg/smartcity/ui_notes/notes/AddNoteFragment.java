@@ -4,14 +4,12 @@ import android.app.DatePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,12 +23,10 @@ import nuno.estg.smartcity.db.NotesManagerDB;
 
 public class AddNoteFragment extends Fragment {
 
-    EditText assunto, rua, local, codpostal, data, obs;
-    private SQLiteDatabase database;
-    Button saveBtn;
     final Calendar myCalendar = Calendar.getInstance();
-
-
+    EditText assunto, rua, local, codpostal, data, obs;
+    Button saveBtn;
+    private SQLiteDatabase database;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,23 +79,20 @@ public class AddNoteFragment extends Fragment {
         data.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private void save(String assunto,String rua, String local, String codpostal, String data, String obs)
-    {
-        NotesManagerDB db=new NotesManagerDB(getContext());
+    private void save(String assunto, String rua, String local, String codpostal, String data, String obs) {
+        NotesManagerDB db = new NotesManagerDB(getContext());
 
         //OPEN DB
         db.openDB();
 
         //COMMIT
-        long result=db.insert(assunto, rua, local, codpostal, data, obs);
+        long result = db.insert(assunto, rua, local, codpostal, data, obs);
 
-        if(result>0)
-        {
+        if (result > 0) {
             Toast.makeText(getContext(), "Inserted with success", Toast.LENGTH_SHORT).show();
             return;
 
-        }else
-        {
+        } else {
             Toast.makeText(getContext(), "Unable to save", Toast.LENGTH_SHORT).show();
         }
 

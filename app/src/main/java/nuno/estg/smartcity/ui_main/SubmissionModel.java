@@ -23,11 +23,13 @@ public class SubmissionModel implements Serializable {
         this.id_user = id_user;
         this.data = data;
     }
-    public String toString(){
-        return "id : " + id_submission + "\nassunto : " + assunto + "\nlat : " + lat + "\nlng : " + lng + "\nobs : " + obs + "\nidUser : " + id_user + "\ndata : " + data;
-    }
+
     public SubmissionModel() {
 
+    }
+
+    public String toString() {
+        return "id : " + id_submission + "\nassunto : " + assunto + "\nlat : " + lat + "\nlng : " + lng + "\nobs : " + obs + "\nidUser : " + id_user + "\ndata : " + data;
     }
 
     public String getImg() {

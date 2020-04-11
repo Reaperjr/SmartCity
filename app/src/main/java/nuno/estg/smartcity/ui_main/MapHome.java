@@ -2,11 +2,8 @@ package nuno.estg.smartcity.ui_main;
 
 
 import android.Manifest;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 
@@ -61,11 +58,6 @@ public class MapHome extends Fragment{
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
 
-       /* try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         mMapView.getMapAsync(new OnMapReadyCallback() {
 
             private void enableMyLocation() {
@@ -86,7 +78,6 @@ public class MapHome extends Fragment{
                 googleMap = mMap;
                 mUiSettings = mMap.getUiSettings();
 
-                // Keep the UI Settings state in sync with the checkboxes.
                 mUiSettings.setZoomControlsEnabled(true);
                 enableMyLocation();
                 mUiSettings.setMyLocationButtonEnabled(true);

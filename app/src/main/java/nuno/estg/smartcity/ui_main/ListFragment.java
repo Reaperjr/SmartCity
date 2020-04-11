@@ -24,7 +24,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -36,14 +35,61 @@ import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import nuno.estg.smartcity.R;
-import nuno.estg.smartcity.ui_notes.notes.UpdateNoteFragment;
 
 
 public class ListFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerViewSubm adapter;
-    private List<SubmissionModel> mSubmssionModel = new ArrayList<>();;
     int id;
+    private List<SubmissionModel> mSubmssionModel = new ArrayList<>();
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            final int position = viewHolder.getAdapterPosition();
+            SubmissionModel subm = mSubmssionModel.get(position);
+            Log.d("tag", subm.toString());
+
+            switch (direction) {
+                case ItemTouchHelper.LEFT:
+                    delete(subm.getId_submission());
+                    mSubmssionModel.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    adapter.notifyItemRangeChanged(position, mSubmssionModel.size());
+                    break;
+                case ItemTouchHelper.RIGHT:
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    UpdateMapInfoFragment frag = new UpdateMapInfoFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("info", subm);
+                    frag.setArguments(bundle);
+                    ft.replace(R.id.fragment_container, frag);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    break;
+            }
+
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+            new RecyclerViewSwipeDecorator.Builder(getActivity(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorAccent))
+                    .addSwipeLeftActionIcon(R.drawable.ic_delete_sweep_black_24dp)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark))
+                    .addSwipeRightActionIcon(R.drawable.edit_24dp)
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +98,7 @@ public class ListFragment extends Fragment {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         id = sharedPreferences.getInt("id", 0);
         Log.d("ResponseList", String.valueOf(id));
-        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerViewMap);
+        recyclerView = root.findViewById(R.id.recyclerViewMap);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
@@ -150,54 +196,5 @@ public class ListFragment extends Fragment {
         });
         queue.add(rq);
     }
-
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            final int position = viewHolder.getAdapterPosition();
-            SubmissionModel subm = mSubmssionModel.get(position);
-            Log.d("tag", subm.toString());
-
-            switch (direction) {
-                case ItemTouchHelper.LEFT:
-                    delete(subm.getId_submission());
-                    mSubmssionModel.remove(position);
-                    adapter.notifyItemRemoved(position);
-                    adapter.notifyItemRangeChanged(position, mSubmssionModel.size());
-                    break;
-                case ItemTouchHelper.RIGHT:
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    UpdateMapInfoFragment frag = new UpdateMapInfoFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("info", subm);
-                    frag.setArguments(bundle);
-                    ft.replace(R.id.fragment_container, frag);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                    break;
-            }
-
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-            new RecyclerViewSwipeDecorator.Builder(getActivity(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorAccent))
-                    .addSwipeLeftActionIcon(R.drawable.ic_delete_sweep_black_24dp)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark))
-                    .addSwipeRightActionIcon(R.drawable.edit_24dp)
-                    .create()
-                    .decorate();
-
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
 
 }

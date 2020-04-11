@@ -12,6 +12,16 @@ public class NotesModel implements Serializable {
     private String obs;
     private int id = 0;
 
+    public NotesModel(String assunto, String rua, String local, String codpostal, String data, String obs, int id) {
+        this.assunto = assunto;
+        this.rua = rua;
+        this.local = local;
+        this.codpostal = codpostal;
+        this.data = data;
+        this.obs = obs;
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -19,15 +29,6 @@ public class NotesModel implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-
-    public NotesModel(String assunto, String rua, String local, String codpostal, String data, String obs, int id){
-        this.assunto = assunto;
-        this.rua = rua;
-        this.local = local;
-        this.codpostal = codpostal;
-        this.data = data;
-        this.obs = obs;
-        this.id= id;    }
 
     public String getAssunto() {
         return assunto;

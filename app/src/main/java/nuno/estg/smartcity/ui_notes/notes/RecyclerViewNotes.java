@@ -15,9 +15,8 @@ import java.util.List;
 import nuno.estg.smartcity.R;
 
 public class RecyclerViewNotes extends RecyclerView.Adapter<RecyclerViewNotes.ViewHolder> {
-    List<NotesModel> notes ;
+    List<NotesModel> notes;
     Context mContext;
-
 
 
     public RecyclerViewNotes(Context context, List<NotesModel> notes) {

@@ -14,17 +14,18 @@ package nuno.estg.smartcity.ui_main;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
-import android.widget.Toast;
 
 import nuno.estg.smartcity.R;
 

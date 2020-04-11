@@ -23,12 +23,10 @@ import nuno.estg.smartcity.db.NotesManagerDB;
 
 public class UpdateNoteFragment extends Fragment {
 
-    EditText assunto, rua, local, codpostal, data, obs;
-    private SQLiteDatabase database;
-    Button saveBtn;
     final Calendar myCalendar = Calendar.getInstance();
-
-
+    EditText assunto, rua, local, codpostal, data, obs;
+    Button saveBtn;
+    private SQLiteDatabase database;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +75,7 @@ public class UpdateNoteFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               update(id,assunto.getText().toString(), rua.getText().toString(), local.getText().toString(), codpostal.getText().toString(), data.getText().toString(), obs.getText().toString());
+                update(id, assunto.getText().toString(), rua.getText().toString(), local.getText().toString(), codpostal.getText().toString(), data.getText().toString(), obs.getText().toString());
             }
         });
 
@@ -92,23 +90,20 @@ public class UpdateNoteFragment extends Fragment {
         data.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private void update(int id, String assunto,String rua, String local, String codpostal, String data, String obs)
-    {
-        NotesManagerDB db=new NotesManagerDB(getContext());
+    private void update(int id, String assunto, String rua, String local, String codpostal, String data, String obs) {
+        NotesManagerDB db = new NotesManagerDB(getContext());
 
         //OPEN DB
         db.openDB();
 
         //COMMIT
-        long result=db.update(id,assunto, rua, local, codpostal, data, obs);
+        long result = db.update(id, assunto, rua, local, codpostal, data, obs);
 
-        if(result>0)
-        {
+        if (result > 0) {
             Toast.makeText(getContext(), "Updated with success", Toast.LENGTH_SHORT).show();
             return;
 
-        }else
-        {
+        } else {
             Toast.makeText(getContext(), "Unable to save", Toast.LENGTH_SHORT).show();
         }
 
