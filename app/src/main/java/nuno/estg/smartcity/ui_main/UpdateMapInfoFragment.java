@@ -127,7 +127,7 @@ public class UpdateMapInfoFragment extends Fragment {
 
     }
     private void update(final String assunto, int id, final String obs, final String date) {
-        final String url = "http://192.168.1.66:3000/api/submission/update";
+        final String url = "http://192.168.1.66:3000/api/submission/updates";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JSONObject params = new JSONObject();
         try {

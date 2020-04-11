@@ -85,15 +85,10 @@ base.delete = async function (req, res) {
   });
 }
 
-base.update = async function (req, res) {
-  var subm = {
-    assunto: req.body.assunto,
-    obs: req.body.obs,
-    img: 'teste',
-    data: req.body.data,
-    id_submissions: req.body.id_submissions
-  }
-  connection.query('UPDATE submissions SET assunto=?,obs=?,img=?,data=?, WHERE id_submissions = ?', subm, function (error, results, fields) {
+base.updates = async function (req, res) {
+  
+  var data = [req.body.assunto,req.body.obs,'teste', req.body.data, req.body.id_submissions]
+  connection.query('UPDATE submissions SET assunto=?, obs=?, img=?, data=? WHERE id_submissions=?', data, function (error, results, fields) {
     if (error) {
       res.json({
         status: false,
