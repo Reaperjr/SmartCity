@@ -77,6 +77,7 @@ public class MapHome extends Fragment{
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
                 mUiSettings = mMap.getUiSettings();
+                googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
                 mUiSettings.setZoomControlsEnabled(true);
                 enableMyLocation();

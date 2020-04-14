@@ -45,6 +45,7 @@ public class AddMap extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment_home, container, false);
         setHasOptionsMenu(true);
+        getActivity().setTitle("Add Submission");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mMapView = (MapView) root.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -73,7 +74,7 @@ public class AddMap extends Fragment {
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
                 mUiSettings = mMap.getUiSettings();
-
+                googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 // Keep the UI Settings state in sync with the checkboxes.
                 mUiSettings.setZoomControlsEnabled(true);
                 enableMyLocation();
